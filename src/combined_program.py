@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python 
 # This program focuses on storage efficiency for processing within evry tweet 
 #and time efficiency while processing successive tweets. It minimizes the use of string storage and comparisons. 
 #It operates tweet by tweet to calulate number of distinct words, their median and their frequency.
@@ -8,12 +8,13 @@
 #number of tweets and focusses on use of pandas dataframes in python which is a scalable datastructure preferred in big
 #data type of operations. The example input tweets and corresponsing output tweets have been obtained in github repositories.
 #its a unique approach which provides a good technical tradeoff and balance of time and storage efficiency.
-
+import sys
+import os
 import numpy as np
 import pandas as pd
 import fileinput
 import hashlib
-from math import *
+#from math import *
 
 #Define max word weight dataframe with 150 characters size limit of twitter.
 max_weight = (127)*150
@@ -26,8 +27,11 @@ line_number = 0
 ind_number = 0
 aa=[]
 
-#Take input and read it word by word in every line
-for line in fileinput.input(['/Users/Pratik/Desktop/tweets.txt']):
+#Take input, read it word by word in every tweet line, calculate and create a word weight map dataframe
+dir = os.path.dirname(__file__)
+filename_input_tweet = os.path.join(dir, '../tweet_input/tweets.txt')
+
+for line in fileinput.input([filename_input_tweet]):
     lines = [np.array(map(str, line.split()))]
     line_number = line_number + 1
     ww1=pd.DataFrame([[[]]*max_weight,[[]]*max_weight,[[]]*max_weight,[[]]*max_weight],index=('freq','lin_num','wrd_num','wrd_len'))
@@ -216,8 +220,7 @@ for line in fileinput.input(['/Users/Pratik/Desktop/tweets.txt']):
             all_tweet_df.loc['f',0].append(new_f.loc['f',0][i])
     
 
-# define a simple function for getting indices of repeted words in a dataframe list
-
+# Define a simple function for getting indices of repeted words in a dataframe list
 def duplicate_indices_from(inp_list,word):
     initiate = -1
     indices_loc = []
@@ -230,10 +233,8 @@ def duplicate_indices_from(inp_list,word):
             indices_loc.append(srch_loc)
             initiate = srch_loc
     return indices_loc
-#......................................
 
-#Sort and Count the word frequency on after combining all the tweets 
-
+#Sort and count the word frequency on after combining all the tweets 
 yyy=sorted(all_tweet_df.loc['w',0])
 new_t_df=pd.DataFrame([[[]],[[]],[[]]],index=('wr','fr','co'))
 
@@ -285,26 +286,23 @@ for i in range(0,len(final_oup_df.loc['wr',0])):
         final_oup_df.loc['fr',0].append(new_t_df.loc['fr',0][match_ind[0]])
         final_oup_df.loc['ind',0].append(new_t_df.loc['co',0][match_ind[0]])
  
-#print the resulting dataframe of words with their respective frequencies and indices within the unsorted dataframe
-
+#Print the resulting dataframe of words with their respective frequencies and indices within the unsorted dataframe
 print "ALL TWEET_WORD_AND_COUNT_DATAFRAME", 
 print final_oup_df
 print "MEDIAN_DATAFRAME"
 print med_f
 
 #Write to respective output text files
-
-file = open('/Users/Pratik/Desktop/ft1.txt', "w")
+file = open('./../tweet_output/ft1.txt', "w")
 for i in range(0,len(final_oup_df.loc['wr',0])):
     file.write(final_oup_df.loc['wr',0][i]+"\t")
     file.write(str(final_oup_df.loc['fr',0][i])+"\n")
 file.close()
 
-file = open('/Users/Pratik/Desktop/ft2.txt', "w")
+file = open('./../tweet_output/ft2.txt', "w")
 file.write("Distinct words"+"\t\t"+"Running Median")
 file.write("\n\n")
 for i in range(0,len(med_f.loc['dw',0])):
     file.write(str(med_f.loc['dw',0][i])+"\t\t\t\t"+str(med_f.loc['m',0][i])+"\n")
     #file.write(str(final_oup_df.loc['fr',0][i])+"\n")
 file.close()
-
