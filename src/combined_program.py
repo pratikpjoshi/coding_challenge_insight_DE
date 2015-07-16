@@ -14,7 +14,6 @@ import numpy as np
 import pandas as pd
 import fileinput
 import hashlib
-#from math import *
 
 #Define max word weight dataframe with 150 characters size limit of twitter.
 max_weight = (127)*150
