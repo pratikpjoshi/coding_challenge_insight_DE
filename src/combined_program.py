@@ -1,4 +1,4 @@
-#!/usr/bin/env python 
+#!/usr/bin/env python
 # This program focuses on storage efficiency for processing within evry tweet 
 #and time efficiency while processing successive tweets. It minimizes the use of string storage and comparisons. 
 #It operates tweet by tweet to calulate number of distinct words, their median and their frequency.
