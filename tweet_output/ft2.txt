@@ -1,0 +1,6 @@
+Distinct words		Running Median
+
+11.0				11.0
+14.0				12.5
+17.0				14.0
+
